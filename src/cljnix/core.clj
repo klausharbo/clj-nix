@@ -287,6 +287,7 @@
      (transduce
        (comp
          (filter #(= "deps.edn" (fs/file-name %)))
+         (remove (comp (partial re-find (re-pattern (str project-dir "/\\."))) str))
          (remove #(some (partial fs/ends-with? %) deps-ignore))
          (map (juxt identity #(-> % deps/slurp-deps :aliases keys)))
          (mapcat aliases-combinations)
